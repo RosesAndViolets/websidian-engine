@@ -1,0 +1,261 @@
+/* ---- the sakura ----
+   One blossom per milestone on a tree that grows to hold them. The wood is a
+   dark brown filled and tapered rather than stroked at one weight, and it is
+   the only picture on the site that is allowed to be a picture. The blossom
+   still carries the recency ramp — the meaning the contribution calendar this
+   replaced had. */
+.calwrap{overflow-x:auto;padding-bottom:4px}
+.sak{display:block;width:100%;height:205px;margin:2px 0 6px}
+/* Bark, not ink. Black wood under a pink canopy read as a diagram with colour
+   added; a warm brown is what makes the two halves one drawing. */
+.sak-wood path{fill:#3b2c2a;stroke:none}
+/* The canopy, deep to pale. Six blossom-pinks that are deliberately *not* the
+   recency ramp: crimson here means a value, and a whole crown of it would claim
+   every leaf was a number. Colour on this drawing is the picture; the reading
+   lives in the blossom eye alone. The per-leaf strength is set inline by the
+   JS — it has to vary, so a rule here would flatten the canopy to one wash. */
+.sak-leaf .k1{fill:#b8336a}
+.sak-leaf .k2{fill:#c9457c}
+.sak-leaf .k3{fill:#d9608f}
+.sak-leaf .k4{fill:#e582a8}
+.sak-leaf .k5{fill:#efa8c2}
+.sak-leaf .k6{fill:#f6cbdb}
+/* The ground the tree stands on, so a trunk cropped at the frame reads as
+   planted rather than as cut off. */
+.sak-ground{fill:#f6cbdb;fill-opacity:.38}
+/* The blossom: five white lobes that lift it clear of the pink beneath. White
+   is the point — it is the one mark on the canopy that stands for something. */
+.sak-bloom circle{fill:#fff;fill-opacity:.93}
+.sak-bloom .core{fill:var(--wash);fill-opacity:1}
+/* The eye. This is where the recency ramp survives, so the newest milestone on
+   a tree is the one flower with a full crimson centre. */
+.sak-bloom .pip{fill-opacity:.85}
+.sak-bloom .l1 .pip{fill:var(--ramp-1)}
+.sak-bloom .l2 .pip{fill:var(--ramp-2)}
+.sak-bloom .l3 .pip{fill:var(--ramp-3)}
+.sak-bloom .l4 .pip{fill:var(--ramp-4)}
+/* The bud: work that has not yet earned a row. Ink, not pigment — colour on this
+   drawing means a milestone was reached, and a bud has reached nothing yet. One
+   per project at most, so it can never become a second scale. */
+.sak-bud path{fill:var(--ink);fill-opacity:.5}
+.sak-bud:hover path{fill-opacity:.75}
+/* One fact per card, stated at a size you can read across the room. */
+.box .big{font-size:21px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.box .big.none{color:var(--faint);font-weight:400}
+/* ---- milestone timeline ----
+   One continuous rule down the left, a dot per entry sitting on it. The line is
+   the list's own border, so it can never drift out of step with the dots. */
+/* A column, not the page's full width: the interval pills ride its right edge,
+   and pinned to a wide page they would float half a screen from the entry they
+   belong to. */
+.tl{list-style:none;margin:0;padding:0 0 0 22px;border-left:1px solid var(--line-2);
+max-width:76ch}
+.tl li{position:relative;padding:0 0 22px 4px}
+.tl li:last-child{padding-bottom:8px}
+/* The next entry is the same day: closed up into a cluster, still its own entry. */
+.tl li.tight{padding-bottom:7px}
+.tl .tl-gap{position:absolute;right:0;top:0;color:var(--dim);font-size:10px;
+border:1px solid var(--line-2);border-radius:3px;padding:1px 8px;background:var(--surface)}
+.tl li::before{content:"";position:absolute;left:-27px;top:4px;width:9px;height:9px;
+border-radius:50%;background:var(--surface);border:1.5px solid var(--line-2)}
+.tl li.now::before{background:var(--accent);border-color:var(--accent)}
+.tl .tl-when{color:var(--dim);font-size:10.5px;font-variant-numeric:tabular-nums}
+
+/* ---- a day that did not earn a milestone ----
+   One rank down from a milestone, and everything here says so quietly: a hollow
+   smaller node, no bold title, the summary on one line with the date. It is on
+   the spine because it happened in the same chronology; it is folded because a
+   session's dozen bullets would otherwise outweigh the milestone above it. */
+.tl li.tl-quiet{padding-bottom:14px}
+.tl li.tl-quiet::before{left:-25.5px;top:5px;width:6px;height:6px;
+background:var(--line-2);border:none}
+.tl-quiet summary{list-style:none;cursor:pointer;display:flex;gap:9px;
+align-items:baseline}
+.tl-quiet summary::-webkit-details-marker{display:none}
+.tl-quiet .tl-sum{font-size:11.5px;color:var(--soft)}
+.tl-quiet summary:hover .tl-sum{color:var(--ink)}
+/* The fold is the affordance, so it has to be visible before it is opened. */
+.tl-quiet .tl-sum::after{content:" ▸";color:var(--faint);font-size:9px}
+.tl-quiet details[open] .tl-sum::after{content:" ▾"}
+.tl-quiet details>ul{list-style:none;margin:7px 0 0;padding:0;
+border-left:1px solid var(--line);padding-left:11px}
+.tl-quiet details>ul li{padding:0 0 5px;font-size:11.5px;line-height:1.55;
+color:var(--soft)}
+.tl-quiet details>ul li::before{display:none}
+.tl-quiet details>ul i{font-style:normal;color:var(--dim);font-size:9px;
+text-transform:uppercase;letter-spacing:.06em;margin-right:7px}
+.tl b{display:block;font-size:13px;font-weight:600;margin-top:1px}
+/* The entry's own title only. Unscoped, this reached inside the dialog the entry
+   opens and painted every bold line in it crimson — and crimson means a value
+   here, never a heading. The dialog is a sibling of the button, so naming the
+   two places a title can sit is what keeps the rule to the list it belongs to. */
+.tl li.now > b,.tl li.now > .tl-hit b{color:var(--accent-ink)}
+.tl p{margin:5px 0 0;color:var(--soft);font-size:12px;line-height:1.6;max-width:62ch}
+/* An entry that opens. The whole concise block is the hit target, so a button
+   is stripped back to the text it wraps rather than being made to look like a
+   control the rest of the timeline does not have. */
+.tl-hit{display:block;width:100%;text-align:left;background:none;border:0;padding:0;
+font:inherit;color:inherit;cursor:pointer}
+.tl-hit b::after{content:"›";display:inline-block;margin-left:7px;font-weight:400;
+color:var(--dim)}
+.tl-hit:hover b{color:var(--accent-ink)}
+.tl-hit:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+/* The dialog. Sized to read at length rather than to fill the screen — this is
+   the one place in the site that carries an essay, and a 74ch column is what
+   makes it readable instead of merely present. */
+.tl-modal{max-width:74ch;width:calc(100% - 40px);max-height:82vh;overflow:auto;
+border:1px solid var(--line-2);border-radius:10px;padding:26px 30px 30px;
+background:var(--surface);color:inherit}
+.tl-modal::backdrop{background:rgba(0,0,0,.42)}
+.tl-modal h3{margin:2px 0 0;font-size:21px;font-weight:600;line-height:1.25;
+letter-spacing:-.02em}
+.tl-modal .tl-when{font-size:11px}
+/* A 32px round target, so the one control in the dialog can be hit by a thumb.
+   The rail's circle, without its border — this is a close, not a nav row. */
+.tl-close{float:right;display:flex;align-items:center;justify-content:center;
+width:32px;height:32px;padding:0;background:none;border:0;border-radius:999px;
+font-size:13px;line-height:1;color:var(--dim);cursor:pointer}
+.tl-close:hover{color:var(--accent-ink);background:var(--line-2)}
+/* ---- the four rooms ----
+   An account, the paths it did not take, the code that carries the idea, and
+   what was consulted. They are different kinds of thing, so they get different
+   shapes rather than four headings down one column — the tab strip is the
+   vault's own pill, because a one-line control here is a pill like anywhere. */
+.tl-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 20px}
+.tl-tabs .pill{font:10.5px/1 inherit;padding:6px 11px;cursor:pointer;background:var(--surface)}
+.tl-tabs .pill .n{margin-left:6px;color:var(--dim);font-variant-numeric:tabular-nums}
+.tl-tabs .pill.act .n{color:var(--accent-ink)}
+.tl-tabs .pill:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Not a callout box: the same 1px left rule the timeline itself speaks in. */
+.tl-account{margin:0;padding-left:15px;border-left:1px solid var(--line-2)}
+.tl-account h4{margin:19px 0 0;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+color:var(--dim);font-weight:600}
+.tl-account h4:first-child{margin-top:0}
+.tl-account p{margin:6px 0 0;font-size:13px;line-height:1.68;max-width:none;color:var(--soft)}
+/* Where a snippet sent you. A wash that fades rather than a permanent mark:
+   it answers "which sentence" and then gets out of the way. */
+@keyframes tl-lit{from{background:var(--wash);box-shadow:0 0 0 5px var(--wash)}
+to{background:transparent;box-shadow:0 0 0 5px transparent}}
+.tl-account p.lit{animation:tl-lit 2.2s ease-out;border-radius:3px}
+
+/* A room with nothing in it. The twelve milestones written before this shape
+   existed have no rejected paths on record, and a tab that opened onto blank
+   would read as a bug rather than as history — so the pane says so in its own
+   voice. Structural rather than a class: a pane whose only child is a
+   paragraph *is* the empty case, and nothing in Data/ has to know that. */
+.tl-part > p:only-child{margin:0;font-size:12px;line-height:1.65;color:var(--dim);
+padding:14px 16px;border:1px dashed var(--line-2);border-radius:10px;max-width:60ch}
+
+/* The rejected paths. A card each, because a list of reasons is a list of
+   separate decisions and running them together loses which is which. */
+.tl-dropped [data-kind]{border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+margin-bottom:11px}
+.tl-dropped [data-kind]::before{content:attr(data-kind);font-size:10px;letter-spacing:.08em;
+text-transform:uppercase;color:var(--dim);font-weight:600}
+/* Reverted is the only kind that is a fact about *this* work rather than about
+   a road not taken — it was built, then taken out. It gets the value colour. */
+.tl-dropped [data-kind="reverted"]::before{color:var(--accent-ink)}
+.tl-dropped b{display:block;font-size:12.5px;font-weight:600;margin:5px 0 0}
+.tl-dropped p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--soft);max-width:60ch}
+
+/* The code. The caption is the point — a fragment without one is a screenshot
+   of a file, and this pane exists to say why *these* lines. */
+.tl-code figure{margin:0 0 16px}
+.tl-code figure[data-explains]{cursor:pointer}
+.tl-code figcaption{font-size:11.5px;color:var(--soft);line-height:1.5;margin-bottom:6px}
+/* The site's own "this opens" mark, the one the timeline entry itself uses —
+   the sentence is in another room, so an arrow pointing up would be a lie. */
+.tl-code figure[data-explains] figcaption::after{content:"the sentence this explains ›";
+display:block;font-size:10px;color:var(--dim);margin-top:3px}
+.tl-code figure[data-explains]:hover figcaption::after{color:var(--accent-ink)}
+.tl-code pre{margin:0;background:var(--sunk);border:1px solid var(--line);border-radius:5px;
+padding:11px 13px;overflow-x:auto;font:11.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace}
+.tl-code figure[data-file]::after{content:attr(data-file);display:block;font:10px/1.4
+ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);margin-top:5px}
+
+/* What was consulted. The status is a fact about the source, and `unreachable`
+   is the one that earns the pane: a reference that could not be read is part of
+   why the work went the way it did, and silence about it would read as certainty. */
+.tl-refs [data-status]{border-bottom:1px solid var(--line);padding:0 0 9px;margin-bottom:9px}
+.tl-refs [data-status]:last-child{border-bottom:0}
+.tl-refs [data-status]::before{content:attr(data-status);float:right;margin-left:10px;
+font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--soft);
+border:1px solid var(--line-2);border-radius:999px;padding:4px 8px}
+.tl-refs [data-status="unreachable"]::before{color:var(--stale);border-color:#eec3bd}
+.tl-refs [data-status="supplied"]::before{color:var(--accent-ink);border-color:var(--accent);
+background:var(--wash)}
+.tl-refs b{display:block;font-size:12.5px;font-weight:600}
+.tl-refs p{margin:2px 0 0;font-size:11.5px;line-height:1.55;color:var(--soft);max-width:58ch}
+.tl-refs cite{display:block;font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+color:var(--dim);font-style:normal;margin-top:3px;word-break:break-all}
+/* ---- how far along ----
+   One rail from the start date to today, or to the target date when there is
+   one. The ticks are milestones, placed by their date, so the bar shows both
+   elapsed time and what was reached in it. */
+.prog{position:relative;height:8px;border-radius:3px;background:var(--line);
+margin:2px 0 8px}
+.prog-fill{height:100%;border-radius:3px;background:var(--accent)}
+/* No target date, so there is no end to fill towards: an open rail rather than
+   a bar painted to 100% because nobody set a deadline. */
+.prog.open{background:none;border:1px dashed var(--line-2)}
+.prog i{position:absolute;top:-2px;width:2px;height:12px;
+background:var(--surface);transform:translateX(-1px)}
+.prog.open i{background:var(--accent);top:-3px}
+.proj h3 a{color:inherit}
+.proj h3 a:hover{color:var(--accent-ink)}
+.proj .hint{margin-top:0}
+
+/* ---- the project page: what happened, beside what is wrong ----
+   Progress and Known problems are the two halves of the same question and they
+   were stacked, so the record of what got done and the list of what it still
+   gets wrong could not be held in one view. Side by side they can. The columns
+   are equal because neither is the subordinate one, and they fold back to a
+   stack under 1000px, where a half is too narrow for a sentence. */
+.proj-split{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.proj-split>*{min-width:0}
+/* `.foot` earns its top margin by following prose; the first thing in a column
+   has nothing above it to be spaced from. */
+.proj-split .foot{margin-top:0}
+@media(max-width:1000px){.proj-split{grid-template-columns:1fr;gap:0}
+.proj-split .foot{margin-top:26px}}
+
+/* ---- known problems ----
+   Each carries a severity badge, a title and a sentence, and the sentence is
+   the part that makes the list worth reading rather than a heading you have to
+   open four dialogs to understand. A card rather than a ruled row: in a half
+   width column the rule stopped reading as a division between two problems. */
+.ch-list{display:flex;flex-direction:column;gap:8px}
+.ch{background:#fafafa;border:1px solid var(--line);border-radius:10px;
+padding:10px 12px;transition:border-color .12s}
+.ch:hover{border-color:var(--line-2)}
+.ch[hidden]{display:none}
+.ch b{display:block;font-size:12.5px;font-weight:600;margin:5px 0 3px}
+.ch p{margin:0;color:var(--soft);font-size:11.5px;line-height:1.5}
+.ch-hit{display:block;width:100%;text-align:left;background:none;border:0;
+font:inherit;color:inherit;cursor:pointer;position:relative;padding:0}
+.ch-hit:hover b{color:var(--accent-ink)}
+.ch-more{display:block;font-size:10.5px;color:var(--dim);margin-top:6px}
+.ch-hit:hover .ch-more{color:var(--accent-ink)}
+
+/* The chips are the filter. A pressed one keeps its own severity colour and
+   gains the action-black ring, so "which severity" and "is it filtering" stay
+   two separate readings — colouring the pressed state crimson would say the
+   count matters, and it is the pressing that matters. */
+.ch-key{gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.ch-key .badge{font-family:inherit;cursor:pointer}
+.ch-key .badge b{display:inline;margin:0 0 0 3px;font-size:inherit;font-weight:600}
+.ch-key .badge:hover{border-color:var(--action)}
+.ch-key .badge[aria-pressed="true"]{border-color:var(--action);
+box-shadow:inset 0 0 0 1px var(--action)}
+
+/* The four severities read off the state colours the rest of the site already
+   uses, so a badge here means what a badge means anywhere: stale is wrong,
+   seed is unfinished, and the neutral one is merely undecided. `silent` is the
+   only one that gets the accent, because it is the only one that will not
+   announce itself. */
+.badge.ch-silent{color:var(--accent-ink);border-color:var(--accent);background:var(--wash)}
+.badge.ch-blocking{color:var(--stale);border-color:#eec3bd}
+.badge.ch-visible{color:var(--seed);border-color:#e8d3ab}
+.badge.ch-open{color:var(--soft)}

@@ -1,0 +1,30 @@
+/* ---- how a link got there ----
+   Three states, and the middle one is the reason the file exists. A chip that
+   was stated and a chip that was concluded look identical in the CSV and read
+   identical on the page, which is exactly how a guess becomes a fact.
+
+   Attribute selectors rather than classes throughout: `data-via` is written by
+   the data, so the stylesheet reads the meaning the row carries instead of a
+   name the renderer had to remember to attach — the same split the milestone
+   fragments make with `data-kind`. It also keeps `.badge` and `.tag` owned by
+   shell/layout.css alone, which `test_no_class_is_owned_by_two_files` checks. */
+
+/* Concluded here. Dashed is already the vault's word for real, usable and not
+   confirmed by anyone — `sp-prov` on a supplement resting on an assumed serving
+   weight, and an `ingredients.csv` row whose basis says "assumed". */
+.foot [data-via="inferred"]{border-style:dashed}
+
+/* Nobody recorded it. Faded, because the honest reading of an edge written
+   before this column existed is that its origin is gone — not that it was
+   stated. Deliberately not dashed: unrecorded is not a weaker `inferred`, it
+   is a different fact, and the two must not blur into one look. */
+.foot .row>:not([data-via]){color:var(--faint);border-color:var(--line)}
+
+.ent-key{margin:10px 0 0;font-size:10.5px;line-height:1.7;color:var(--dim)}
+.ent-key b{font-weight:600;color:var(--soft)}
+/* The legend draws its own samples rather than naming colours in prose, so it
+   cannot drift from the rules above the way a written description would. */
+.ent-key i{font-style:normal;border:1px solid var(--line-2);border-radius:999px;
+padding:1px 7px;margin-right:5px;font-size:9.5px;color:var(--soft)}
+.ent-key i[data-via="inferred"]{border-style:dashed}
+.ent-key i:not([data-via]){color:var(--faint);border-color:var(--line)}

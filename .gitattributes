@@ -1,0 +1,19 @@
+# Every data file is LF, in the index and in the working tree.
+#
+# Python's csv module writes CRLF by default — RFC 4180 says so — which means a
+# script that rewrites one cell hands back a file where every line has changed.
+# That happened twice: once to milestones.csv, once to events.csv, and both
+# times the real one-line edit was invisible inside a whole-file diff.
+#
+# This is the belt. The braces are `lineterminator="\n"` wherever the code
+# writes a CSV, and `test_data_files_are_lf`, which fails if one slips through.
+*.csv text eol=lf
+
+# The rest of the source, for the same reason and with less history behind it.
+*.py    text eol=lf
+*.js    text eol=lf
+*.css   text eol=lf
+*.html  text eol=lf
+*.svg   text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf

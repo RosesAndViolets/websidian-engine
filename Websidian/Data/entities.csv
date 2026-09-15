@@ -1,0 +1,3 @@
+id,kind,name,aka,when,related,note,added
+example-project,project,Example Project,,,,"A row for the mechanism this file exists to test — rename or delete once a real one exists.",2026-01-01
+example-org,org,Example Org,,,,"A second kind, so a query can tell two of these apart by more than one row.",2026-01-01

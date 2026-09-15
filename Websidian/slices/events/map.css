@@ -1,0 +1,168 @@
+/* ---- the events map ----
+   A frame with a fixed aspect, so the card and the reset button have somewhere
+   stable to sit and the SVG never dictates the page's height. */
+.ev-map{position:relative;margin:0 0 18px;border:1px solid var(--line-2);border-radius:10px;
+overflow:hidden;background:var(--surface)}
+.ev-svg{display:block;width:100%;height:auto;background:var(--surface);
+cursor:grab;touch-action:none;user-select:none}
+.ev-svg:active{cursor:grabbing}
+
+/* While a gesture is running there is no ease. The half-second ease is what
+   makes a jump between two pins read as travel; under a wheel it would put the
+   map half a second behind the fingers moving it. */
+.ev-map.live #ev-view,.ev-map.live .ev-pin,.ev-map.live .ev-label,
+.ev-map.live .ev-pin-name,.ev-map.live .ev-layer,
+.ev-map.live .ev-land-fade{transition:none}
+
+/* Land reads as a shape, not as a drawing: no coastline stroke, because at this
+   simplification a stroke shows every place the line was straightened. It fades
+   out entirely past the scale where 1:10m is still evidence — see EV_TRUE and
+   EV_LIE in map.js — and the names in Data/places.csv carry the map from there.
+   Drawing a city-scale coastline instead is a second <g> in this same projection
+   toggled the same way, not a second map: the pins would not move for it. */
+.ev-land path{fill:var(--line-2);stroke:none}
+.ev-land-fade{transition:opacity .5s cubic-bezier(.4,.05,.2,1)}
+
+/* A detail layer takes over as the land lets go: same projection, same box,
+   finer geometry, arriving at the tier its names belong to. Each carries its
+   own scale rather than riding #ev-view, because its paths are written around
+   an origin of their own — see the note on evView in map.js for why that is
+   the difference between a map and a blank frame past scale 19000. */
+.ev-layer{transition:opacity .5s cubic-bezier(.4,.05,.2,1),
+transform .5s cubic-bezier(.4,.05,.2,1)}
+
+/* A ward: massed, with a hairline border that stays one pixel at any scale,
+   because a boundary has no width on the ground to be faithful to. */
+.ev-ward{fill:var(--line-2);fill-opacity:.5;stroke:var(--faint);stroke-width:1;
+vector-effect:non-scaling-stroke;fill-rule:evenodd}
+
+/* The street picture. Three things make it read as a street map rather than a
+   diagram, and only the first is colour.
+
+   Roads are strokes in WORLD units, not pixels — 0.00044 of the box is about
+   seven metres, so a lane stays seven metres wide as you zoom instead of
+   staying seven pixels. That is the whole trick: the white is the road at its
+   real width, and the blocks between them are not drawn at all, they are the
+   ground showing through. No block polygons ship, which is why this is twenty
+   kilobytes a square kilometre and not four hundred.
+
+   The ground rect is the second: it is exactly the box the data covers, so the
+   edge of what is known looks like an edge rather than like countryside.
+
+   The colours are the third, and they are the one place this file spends
+   colour on something other than meaning — a map is allowed to say water is
+   blue. They are held well below Google's saturation so the frame still sits
+   in the same room as the blush ground around it. */
+.ev-map{--gnd:#ebe9e9;--wet:#c2dbe8;--veg:#d9e5d2;--lot:#f1ebd9;--tar:#fff}
+.ev-ground{fill:var(--gnd)}
+.ev-block{fill:var(--lot)}
+.ev-green{fill:var(--veg)}
+.ev-water{fill:var(--wet);fill-rule:evenodd}
+.ev-stream{fill:none;stroke:var(--wet);stroke-width:.0013;stroke-linejoin:round}
+.ev-lane,.ev-road{fill:none;stroke:var(--tar);stroke-linecap:round;stroke-linejoin:round}
+.ev-lane{stroke-width:.00044}
+.ev-road{stroke-width:.00115}
+
+/* A name is placed in frame coordinates and never scaled, so its size is just
+   its size at every zoom. The `dy` in map.js hangs it below its point, clear
+   of a pin standing on the same coordinate, which is what happens whenever an
+   event is at the place itself.
+
+   Labels are scenery: they never take a click, or they would steal one from a
+   pin behind them. Names may collide where wards are small; the fix is a
+   shorter name in the CSV, since nudging labels apart is a layout engine and
+   this is a list. */
+.ev-label{opacity:0;pointer-events:none;
+transition:opacity .5s cubic-bezier(.4,.05,.2,1),
+transform .5s cubic-bezier(.4,.05,.2,1)}
+.ev-label.on{opacity:1}
+/* Ink, not the soft grey the rest of the site labels in: the halo puts every
+   name on the #ebe9e9 ground, where --soft measures 3.9:1 and fails at this
+   size. A name on a map is read, not glanced at. */
+.ev-label text,.ev-pin-name{fill:var(--ink);font-size:10px;letter-spacing:.04em;
+text-anchor:middle;paint-order:stroke;stroke:var(--gnd,var(--surface));stroke-width:2.6;
+stroke-linejoin:round}
+
+/* The pin says where; this says where *that* is. Above the pin rather than
+   below it, because a pin's tip is its meaning and a name under it would sit on
+   the thing being pointed at. Outside .ev-pin-in, so the hover growth moves the
+   marker and leaves the name where it was.
+
+   It appears once its pin has room for it — see evNamed. Fading rather than
+   switching, so a name arriving as you zoom in reads as the map getting
+   closer, not as something blinking. */
+.ev-pin-name{pointer-events:none;opacity:0;
+transition:opacity .5s cubic-bezier(.4,.05,.2,1)}
+.ev-pin.named .ev-pin-name{opacity:1}
+
+/* A station says so before you read it. The chip is the mark on the building;
+   the name hangs under it, which is why its `dy` is bigger than a bare name's. */
+.ev-stop-chip{fill:var(--soft)}
+.ev-stop-mark{fill:none;stroke:var(--surface);stroke-width:1.05;stroke-linecap:round;
+stroke-linejoin:round}
+
+/* The frame moves, not the pins — and it moves visibly, because a map that
+   jumps has not told you the two places are far apart. */
+#ev-view{transition:transform .5s cubic-bezier(.4,.05,.2,1)}
+.ev-pin{transition:transform .5s cubic-bezier(.4,.05,.2,1);cursor:pointer}
+
+/* Crimson, not the reference's blue: in this design crimson is what marks a
+   value, and where you were is the value on this page. The shape is the part
+   that was worth copying.
+
+   Every scale it grows by is applied to .ev-pin-in, never to .ev-pin, because
+   the outer group's transform is written by evGo on every frame and CSS would
+   be fighting it. The origin is the tip, so growing keeps the tip put. */
+.ev-pin-in{transition:transform .18s cubic-bezier(.4,.05,.2,1)}
+.ev-pin-body{fill:var(--accent);stroke:var(--surface);stroke-width:1.6;
+stroke-linejoin:round}
+.ev-pin-eye{fill:var(--surface)}
+.ev-pin-cast{fill:#000;opacity:.16}
+.ev-pin:hover .ev-pin-in{transform:scale(1.08)}
+.ev-pin.on .ev-pin-in{transform:scale(1.16)}
+.ev-pin.on .ev-pin-body{fill:var(--accent-ink)}
+
+/* In the corner, because the picked pin is always at the middle — so the one
+   place a card must not sit is over the middle. It used to hang directly above
+   the pin, which was free while the map underneath was a grey blob; now that a
+   detail layer draws the streets around it, that spot covers the five wards
+   you picked the pin to look at. A corner still needs no logic to avoid an
+   edge or point at anything, and the highlighted pin says which one it is. */
+.ev-card{position:absolute;left:14px;top:14px;
+min-width:210px;max-width:min(340px,calc(100% - 28px));padding:11px 13px;
+border:1px solid var(--line-2);border-radius:10px;background:var(--surface);
+max-height:calc(100% - 28px);overflow:auto}
+.ev-card[hidden]{display:none}
+/* One pin, several evenings. The rule between them is what stops two titles
+   from reading as one entry with a long heading. */
+.ev-card-place{font-size:12px;font-weight:600;margin-bottom:8px}
+.ev-card-ev+.ev-card-ev{border-top:1px solid var(--line-2);margin-top:9px;padding-top:9px}
+.ev-card-top{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px}
+.ev-card-top b{font-size:13px;line-height:1.35;display:block}
+.ev-card-sub{color:var(--dim);font-size:10.5px;margin-top:2px}
+.ev-ico{width:19px;height:19px;flex:none;margin-top:1px;fill:none;stroke:var(--accent);
+stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+/* The plane and the pin read as solid shapes; the rest are line drawings. */
+.ev-ico path[d^="M15 2"],.ev-ico path[d^="M8 2a4"]{fill:var(--accent);stroke:none}
+
+/* The controls the wheel duplicates. They are not decoration: the wheel is a
+   mouse, and a keyboard has to be able to do this too. */
+.ev-tools{position:absolute;right:9px;bottom:9px;display:flex;gap:5px;align-items:center}
+.ev-tools button{font-size:10.5px;padding:3px 9px;border:1px solid var(--line-2);
+border-radius:999px;background:var(--surface);color:var(--dim);cursor:pointer}
+.ev-tools button:hover{color:var(--accent-ink)}
+.ev-tools button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.ev-tools [data-ev-zoom]{width:24px;padding:3px 0;font-size:12px;line-height:1}
+
+/* The window. Above the map rather than in .ev-tools, because those controls
+   only exist when there is a map to control — and the one state you must be
+   able to leave is the window that emptied it. */
+.ev-span{display:flex;align-items:center;gap:7px;margin:0 0 10px;
+color:var(--dim);font-size:11px}
+.ev-span select{font:inherit;color:var(--ink);padding:3px 7px;border:1px solid var(--line-2);
+border-radius:999px;background:var(--surface);cursor:pointer}
+.ev-span select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* An entry in the list below that is the one currently on the map. */
+.tl-hit.picked b{color:var(--accent-ink)}
+.tl-hit.picked b::after{opacity:1}

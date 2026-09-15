@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vault</title>
+<script>
+// Double-clicking this file opens a page that can't write anything. If the server
+// happens to be up, go there instead — the two pages are identical apart from that.
+// fetch() can't be used to check: a file:// page has a null origin and the request
+// is blocked before it leaves the browser. A <script> tag isn't, and its load/error
+// events say whether the port answered. The JSON it returns fails to parse, which is
+// fine — the event already told us what we needed.
+// ponytail: probes one hardcoded port, same one serve.py binds.
+if (location.protocol === 'file:') {
+  const probe = document.createElement('script');
+  probe.src = 'http://127.0.0.1:8765/api/inbox';
+  probe.onload = () => location.replace('http://127.0.0.1:8765/' + location.hash);
+  addEventListener('error', e => e.filename === probe.src && e.preventDefault(), true);
+  document.head.appendChild(probe);
+}
+</script>

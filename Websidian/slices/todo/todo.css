@@ -1,0 +1,146 @@
+/* ---- the to do list ----
+   One list, ordered by when. The buckets it used to draw as columns are now
+   the colour of each row's left edge, and the chips above are those same
+   buckets turned into filters.
+
+   **The colours are the recency ramp, read as urgency.** DESIGN.md's Recency
+   Ramp Rule says a stronger colour is always "more recently" and that any new
+   time-decayed visualisation reuses `--ramp-1..4` rather than inventing a
+   scale. Nearness of a deadline is that same axis pointed forward, so Overdue
+   takes full crimson and Later fades to the palest step. No new hue enters the
+   palette, which matters more here than anywhere: eight rails in eight colours
+   would have cost the Scarce Accent Rule the whole card.
+
+   Undated and set-aside rows sit outside the ramp in grey, because they are
+   not on the axis at all — Open has no date to be near, and a workout two days
+   over is the resting state of that row rather than a deadline missed.
+
+   Deliberately not `.wk` — that label is a *kind*, this one is a bucket, and
+   one class doing both would make a rename in either place a bug in the other. */
+.s-overdue{--sc:var(--accent)}
+.s-today{--sc:var(--ramp-3)}
+.s-this-week{--sc:var(--ramp-2)}
+.s-later{--sc:var(--ramp-1)}
+.s-open{--sc:var(--line-2)}
+.s-workout,.s-fyi{--sc:var(--faint)}
+
+.td-list{display:flex;flex-direction:column;gap:4px}
+
+/* One line: the sentence, then rail, timing and tag as a quiet run, then the
+   button. Two lines per row was affordable in a 210px column and is not in a
+   list of sixteen — the sentence has the whole width now, so it needs no
+   second line to fit on. */
+.td{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;
+align-items:baseline}
+.td b{font-weight:500;font-size:12px;color:var(--ink);line-height:1.5;min-width:0;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td span{color:var(--dim);font-size:10px;white-space:nowrap;
+font-variant-numeric:tabular-nums}
+/* A question is a thing to find out rather than a thing to do, so it reads
+   quieter — crimson stays on the edge and the chip, which is what is counted. */
+.td.k-question b{font-weight:400;color:var(--soft)}
+.td.k-cadence span{color:var(--accent-ink)}
+
+/* The bucket, as a 3px edge. A row is still an inset panel rather than a ruled
+   line — #fafafa on the box's white, the same shape as `.log` and `.fin-note` —
+   because the edge needs something to be an edge of. */
+.td-item{background:#fafafa;border:1px solid var(--line);
+border-left:3px solid var(--sc,var(--line-2));border-radius:0 10px 10px 0;
+padding:5px 9px;transition:border-color .12s}
+.td-item:hover{border-color:var(--line-2);border-left-color:var(--sc,var(--line-2))}
+/* FYI is not owed to anyone, so its edge is drawn rather than stated. */
+.td-item.s-fyi{border-left-style:dashed}
+.td-item.s-fyi .td b{color:var(--soft);font-weight:400}
+
+/* ---- the buckets as filters ----
+   The dot carries the same colour the rows do, so pressing a chip and reading
+   the edges that survive is one lookup rather than two. */
+.td-filters{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.td-chips{gap:5px;flex-wrap:wrap;align-items:center}
+/* Which dimension this row narrows. Fixed width so the two rows of chips start
+   on the same edge — ragged, they read as one wrapped row rather than two. */
+.td-chips>.hint{margin:0;width:40px;flex:none}
+.td-chip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+font:inherit;font-size:11px}
+.td-chip::before{content:"";width:6px;height:6px;border-radius:50%;flex:none;
+background:var(--sc,var(--faint))}
+.td-chip b{font-weight:600;color:var(--ink)}
+/* `.pill.val` already paints the pressed state — crimson edge, wash behind —
+   and it is the same "this is the one selected" the recipe windows use. */
+.td-chip:hover{border-color:var(--action)}
+.td-chip.val:hover{border-color:var(--accent)}
+/* The rail chips carry no bucket colour: a rail is not a point on the urgency
+   axis, and a dot that meant nothing would read as though it did. */
+.td-typechips .td-chip::before{display:none}
+
+.td-clear{align-self:start;border:none;background:none;padding:0;font:inherit;
+font-size:10px;color:var(--soft);cursor:pointer;text-decoration:underline;
+text-underline-offset:2px}
+.td-clear:hover{color:var(--ink)}
+
+/* The button is near-black because it is pressable, never crimson: crimson
+   marks a value on this site and nothing else. It stays invisible until the row
+   is hovered or it has focus, so a list of twelve todos is a list rather than a
+   column of buttons — but focus keeps it reachable from the keyboard, which
+   hover alone would quietly take away. */
+.td-update{justify-self:end;
+border:1px solid var(--line-2);background:var(--surface);
+border-radius:999px;padding:2px 10px;font:inherit;font-size:10px;color:var(--soft);
+cursor:pointer;opacity:0;transition:opacity .12s,border-color .12s}
+.td-item:hover .td-update,.td-update:focus{opacity:1}
+.td-update:hover{border-color:var(--action);color:var(--ink)}
+.td-update:disabled{opacity:1;color:var(--dim);cursor:default;border-style:dashed}
+
+/* Inside the item's own card now, so it needs no gutter to line up under —
+   the card is the alignment. */
+.td-reply{padding:7px 0 1px}
+.td-reply textarea{min-height:64px;margin:0 0 6px}
+.td-reply .row{gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ---- the same list as a month ----
+   Its own grid rather than the diet calendar's `.calmonth`: that one carries an
+   eighth column for the week's average, its cells are built around a figure and
+   a bar, and a class owned by two slices is a rename in either that breaks the
+   other. The frame is cheap; the coupling would not have been. */
+.tdc-month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;
+margin-bottom:18px}
+.tdc-head{font-size:9px;text-transform:uppercase;letter-spacing:.08em;
+color:var(--dim);padding:0 2px 2px}
+.tdc-day{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+padding:6px 7px;min-height:82px}
+.tdc-day.out{background:transparent;border-color:transparent}
+.tdc-day.out .tdc-date{color:var(--faint)}
+.tdc-day.now{border-color:var(--action)}
+.tdc-date{font-size:11px;color:var(--soft);font-weight:600}
+.tdc-day.now .tdc-date{color:var(--ink)}
+
+/* A row is the sentence, folded to one line. Truncation is the whole reason a
+   cell can hold three things without the week growing to fit the longest of
+   them; `title` is what keeps it folded rather than lost. */
+.tdc-rows{list-style:none;margin:5px 0 0;padding:0;display:flex;
+flex-direction:column;gap:3px}
+.tdc-row{font-size:10px;line-height:1.4;color:var(--ink);background:#fafafa;
+border-left:2px solid var(--line-2);border-radius:0 4px 4px 0;padding:2px 5px;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:default}
+.tdc-row.tdc-late{border-left-color:var(--accent);color:var(--accent-ink)}
+.tdc-row.tdc-fyi{border-left-style:dashed;color:var(--soft)}
+.tdc-row.tdc-aside{border-left-color:var(--faint);color:var(--soft)}
+
+/* What the grid cannot place. Drawn as chips rather than a second month so it
+   never reads as a week you could act on in order. */
+.tdc-strip{margin-bottom:16px}
+.tdc-strip h4{margin:0 0 6px;padding-top:8px;border-top:1px dashed var(--faint);
+font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+color:var(--soft);display:flex;align-items:center;gap:7px}
+.tdc-strip h4 em{font-style:normal;color:var(--faint);font-weight:400;letter-spacing:0}
+.tdc-stripitems{display:flex;flex-wrap:wrap;gap:6px}
+.tdc-chip{display:inline-flex;align-items:baseline;gap:6px;max-width:100%;
+background:#fafafa;border:1px solid var(--line);border-radius:999px;
+padding:4px 11px;font-size:11px;color:var(--ink)}
+.tdc-chip i{font-style:normal;font-size:9px;text-transform:uppercase;
+letter-spacing:.07em;color:var(--dim);flex:none}
+.tdc-chip b{font-weight:500;font-size:10px;color:var(--soft);flex:none}
+.tdc-strip.tdc-striplate h4{border-top:2px solid var(--accent);color:var(--accent-ink)}
+
+@media(max-width:900px){.tdc-month{grid-template-columns:repeat(7,minmax(0,1fr));
+gap:3px}.tdc-day{min-height:60px;padding:4px 5px}.tdc-row{font-size:9px}}

@@ -1,0 +1,30 @@
+/* ---- prose ---- */
+article h3{font-size:14px;margin:22px 0 6px;font-weight:600}
+article p{margin:10px 0;font-size:13.5px;line-height:1.65}
+article ul,article ol{padding-left:20px}
+article li{margin:5px 0;font-size:13.5px}
+article hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+article del{color:var(--dim)}
+ul.tasks{list-style:none;padding-left:0}
+li.task input{margin-right:8px;accent-color:var(--accent)}
+li.task.done{color:var(--dim)}
+article code,.dc code{background:#f7f7f7;border:1px solid var(--line);border-radius:5px;
+padding:1px 5px;font-size:11.5px}
+article pre{background:#fafafa;border:1px solid var(--line);border-radius:12px;padding:14px;
+overflow-x:auto;font-size:11.5px;white-space:pre-wrap;line-height:1.55}
+article img{max-width:100%;border-radius:12px;border:1px solid var(--line);margin:10px 0;
+display:block}
+.scroll{overflow-x:auto;margin:12px 0}
+article table{border-collapse:collapse;width:100%;font-size:11.5px}
+article th,article td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;
+vertical-align:top}
+article th{color:var(--dim);font-weight:500;font-size:10px;text-transform:uppercase;
+letter-spacing:.05em;white-space:nowrap}
+article tr:hover td{background:var(--wash)}
+/* The opening sentence, as a sentence — no titled box. A page says what it is
+   by saying it, which is also what makes the card summaries read properly. */
+article p.lead{font-size:15px;line-height:1.6;color:var(--soft);margin:0 0 20px}
+/* Quoted source text, where the wording itself is the record. */
+article blockquote{border-left:2px solid var(--line-2);margin:16px 0;padding:2px 0 2px 16px}
+article blockquote p{font-size:12.5px;color:var(--soft)}
+

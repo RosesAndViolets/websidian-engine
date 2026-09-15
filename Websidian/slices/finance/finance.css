@@ -1,0 +1,184 @@
+/* ---- finance ----
+   Two charts and a lot of reused furniture. The bucket lists are `.rest` rows
+   and the totals are `.tile`s, because a bucket and a rested muscle are the
+   same shape — a name, a magnitude, and a number on the right.
+
+   The four classes get four fixed colours and keep them across every view, so
+   the legend under the column chart is also the legend for the class pages.
+   Crimson stays where the design puts it: on the value being measured. */
+.c-necessity{background:var(--ramp-4)}
+.c-luxury{background:var(--ramp-2)}
+.c-investment{background:var(--action)}
+.c-uncategorised{background:var(--hatch);background-color:#e3e3e3}
+
+/* A stacked column per month. `.spark` could not be reused: it is one bar of
+   one colour, and the whole point here is the split inside the bar. */
+.fin-chart{display:flex;align-items:flex-end;gap:4px;height:150px;margin:4px 0 2px}
+.fin-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+align-items:stretch;height:100%;min-width:0}
+.fin-stack{display:flex;flex-direction:column-reverse;border-radius:3px;overflow:hidden;
+min-height:2px}
+.fin-stack i{display:block;min-height:1px}
+.fin-col span{color:var(--dim);font-size:9px;text-align:center;margin-top:5px;
+white-space:nowrap;overflow:hidden}
+/* The year, printed once where it turns over rather than on all twelve. Same
+   Tick size as the month above it — Ink Faint is what subordinates it, which is
+   what the colour tier is for and what the half pixel was being credited with. */
+.fin-col span i{font-style:normal;display:block;color:var(--faint)}
+
+/* The hover card. Dark because it is the only thing on this site that floats
+   over the pane, and the page's own vocabulary — a white card with a 1px rule —
+   would read as content that had come loose. No shadow needed at this contrast;
+   `pointer-events:none` so it can sit under the cursor without ever swallowing
+   the click that opens the month. */
+#fintip{position:fixed;z-index:60;pointer-events:none;opacity:0;
+background:var(--ink);color:#fff;border-radius:6px;padding:9px 11px;
+font-size:10.5px;line-height:1.5;max-width:260px;
+transition:opacity .08s}
+#fintip.on{opacity:1}
+#fintip b{display:inline-block;font-weight:600;font-size:11.5px}
+#fintip u{text-decoration:none;color:var(--faint);margin-left:8px}
+#fintip span{display:flex;align-items:center;gap:6px;margin-top:3px;color:#e6e6e6}
+#fintip span em{font-style:normal;margin-left:auto;padding-left:14px;
+font-variant-numeric:tabular-nums}
+#fintip i{width:7px;height:7px;border-radius:3px;flex:none}
+/* Investment is `--action`, which is near-black — the one class colour that
+   means "ink on white" and therefore disappears on this card. Inverted here
+   rather than changed in the legend, where it is correct. */
+#fintip i.c-investment{background:#fff}
+#fintip .fin-tip-go{color:var(--dim);margin-top:5px}
+
+/* A column is pressable, so it says so before it is pressed and stays lit
+   after. The picked one gets the ink underline rather than a colour, because
+   every colour in this chart already means a spending class. */
+.fin-col{cursor:pointer}
+.fin-col:hover .fin-stack{outline:2px solid var(--line-2);outline-offset:1px}
+.fin-col.sel span{color:var(--ink);font-weight:600}
+.fin-col.sel .fin-stack{outline:2px solid var(--action);outline-offset:1px}
+
+/* One month, opened under the chart. */
+.fin-detail h4{margin:18px 0 8px;font-size:10px;text-transform:uppercase;
+letter-spacing:.08em;color:var(--dim);font-weight:600}
+.fin-detail h4 em{font-style:normal;text-transform:none;letter-spacing:0;
+margin-left:8px;color:var(--faint)}
+.fin-close{float:right;border:1px solid var(--line-2);background:var(--surface);
+border-radius:999px;padding:3px 11px;font:inherit;font-size:10px;color:var(--soft);
+cursor:pointer}
+.fin-close:hover{border-color:var(--action);color:var(--ink)}
+.fin-split .rest b i{display:inline-block;width:7px;height:7px;border-radius:3px;
+margin-right:6px}
+/* Every charge of the month. A grid rather than `.rest`, because five columns
+   that line up down the list is the whole point of reading it against an app —
+   the eye runs down the yen and the date, not across each row. */
+.fin-tx{max-height:420px;overflow-y:auto}
+.fin-t{display:grid;grid-template-columns:22px 1fr 88px 140px 92px;gap:10px;
+align-items:baseline;padding:5px 0;border-bottom:1px solid var(--line);font-size:11px}
+.fin-t:last-child{border-bottom:none}
+/* Every cell is one line. A bucket wrapping to two makes the rows different
+   heights, and a list read against a bank app is read by running down it. */
+.fin-t>*{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fin-t i{font-style:normal;color:var(--faint);font-size:10px;text-align:right}
+.fin-t b{font-weight:500}
+.fin-t u{text-decoration:none;color:var(--dim);font-size:10px}
+.fin-t em{font-style:normal;color:var(--soft);font-size:10px}
+.fin-t span{text-align:right;font-variant-numeric:tabular-nums}
+/* Charged but not counted: still shown, visibly not part of the total above. */
+.fin-t.off{color:var(--faint)}
+.fin-t.off b,.fin-t.off em,.fin-t.off u,.fin-t.off span{color:var(--faint)}
+.fin-t.off span{text-decoration:line-through}
+
+/* By medium: months down, rails across. Inherits `article table` — this only
+   turns the figures into a column you can run an eye down and compare with an
+   app, which means right-aligned and same-width digits. */
+.fin-scroll{overflow:auto;max-height:420px}
+.fin-med{font-variant-numeric:tabular-nums}
+.fin-med td{text-align:right}
+.fin-med thead th{position:sticky;top:0;background:var(--surface);z-index:1}
+/* A rail's heading sits over its own figures. Left-aligned — which is what
+   `article th` gives every table on the site — leaves the name at one end of a
+   wide column and the numbers at the other. */
+.fin-med thead th+th{text-align:right}
+.fin-med tbody th{text-align:left;color:var(--soft);font-weight:500;
+text-transform:none;letter-spacing:0;font-size:10.5px}
+.fin-med tr.out{color:var(--faint)}
+.fin-med tr.out th{color:var(--faint)}
+/* A cell the site counts less of than was charged. Underlined rather than
+   coloured: it is a footnote, not a problem, and colour here would read as
+   one. The same mark is used inline in the hint so the two are obviously the
+   same thing. */
+.fin-med td.gap,.hint .gap{text-decoration:underline dotted var(--dim);
+text-underline-offset:3px}
+
+/* Coverage: one tick per month over the whole log, tall where more accounts
+   were reporting. Months without the primary rail are hatched rather than
+   short, because short would read as a quiet month — which is the exact
+   confusion this strip exists to prevent. */
+.fin-cov{display:flex;align-items:flex-end;gap:2px;height:46px;margin-bottom:10px}
+.fin-cv{flex:1;background:var(--ramp-3);border-radius:3px 3px 0 0;min-width:2px}
+.fin-cv.out{background:#e3e3e3;background-image:var(--hatch)}
+
+.fin-tiers .bar i.t-rule{background:var(--ramp-4)}
+.fin-tiers .bar i.t-mf{background:var(--ramp-2)}
+.fin-tiers .bar i.t-none{background:var(--faint)}
+
+/* The caveats read as prose, so they cannot borrow `.log` — that is styled
+   `white-space:pre-wrap` for machine output, and a sentence written across
+   four indented source lines arrives with the indentation in it. Same shell,
+   ordinary wrapping. */
+.fin-note{margin-top:12px;background:#fafafa;border:1px solid var(--line);
+border-radius:12px;padding:12px;font-size:11px;color:var(--soft);line-height:1.55}
+.fin-note b{color:var(--ink);font-weight:600}
+
+/* A yen figure runs to seven digits where a calorie count runs to four, and
+   `.tile b` was sized for the latter — at 21px a million yen overruns its tile
+   and the last digits are simply cut off. Same tile, a figure that fits in it. */
+.tiles.yen .tile b{font-size:17px;letter-spacing:-.01em}
+
+/* A bucket row carries a bar between its name and its figure, so the list is
+   scannable without turning it into a chart of its own. */
+.rest .bar{height:4px;align-self:center}
+.restkey i.c-uncategorised{background-color:#e3e3e3}
+
+/* A goal is an `.act` row with a price under it — same heading line, same bar.
+   Status is a left edge rather than a chip: the column is read down for "what
+   is actually happening", and a colour the eye catches without stopping beats
+   a word it has to. */
+.fin-goal{padding:11px 0 12px;border-bottom:1px solid var(--line);
+padding-left:11px;border-left:2px solid var(--faint)}
+.fin-goal:last-child{border-bottom:none}
+.fin-goal.k-active{border-left-color:var(--accent)}
+.fin-goal.k-done{border-left-color:var(--solid)}
+.fin-goal p{margin:6px 0 0;font-size:11px;color:var(--soft);line-height:1.5}
+.fin-goal-n{display:flex;justify-content:space-between;gap:10px;font-size:10.5px;
+color:var(--dim);margin-top:2px}
+/* An estimated total gets a dashed track. The bar is the one thing on the card
+   read without reading, so the doubt has to live on the bar itself — a word
+   next to it is a word that gets skipped. */
+.fin-goal .bar.est{background:transparent;border:1px dashed var(--line-2);height:6px}
+.fin-goal-n i{font-style:normal;color:var(--faint)}
+.fin-goal-n .late{color:var(--stale)}
+.fin-goal-n .blocked{color:var(--seed)}
+
+/* The four months behind the average, signed. Not a `.spark` — that one is
+   all-positive and grows off the floor, and the whole point here is the month
+   that went under it. The zero line is drawn across the middle and each bar is
+   placed against it, so a small surplus and a small deficit are the same size
+   on opposite sides rather than two bars at different heights. */
+.fin-spread{display:flex;gap:4px;height:52px;margin:12px 0 4px;position:relative}
+.fin-spread::after{content:"";position:absolute;left:0;right:0;top:50%;
+border-top:1px solid var(--line-2)}
+.fin-spread i{flex:1;position:relative}
+.fin-spread i::before{content:"";position:absolute;left:0;right:0;bottom:50%;
+height:var(--h);min-height:2px;background:var(--ramp-3);border-radius:3px 3px 0 0}
+.fin-spread i.neg::before{bottom:auto;top:50%;background:var(--stale);
+border-radius:0 0 3px 3px}
+
+/* The review is prose somebody wrote, so it is the one place on a Finance page
+   that reads like a page rather than a readout. */
+.fin-review p{font-size:12px;line-height:1.65;color:var(--ink);margin:0 0 10px}
+.fin-review p:last-child{margin-bottom:0}
+.fin-review b{font-weight:600}
+.fin-review h4{margin:16px 0 8px;font-size:11px;color:var(--dim);font-weight:600}
+.fin-past{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.fin-past summary{font-size:10.5px;color:var(--dim);cursor:pointer}
+.fin-past summary:hover{color:var(--accent-ink)}

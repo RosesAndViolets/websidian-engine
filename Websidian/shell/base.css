@@ -1,0 +1,38 @@
+/* Crimson Pill Grid — see Notes/Crimson Pill Grid.md for the source spec.
+   Two accents with fixed jobs: crimson marks VALUE, action-black marks
+   PRESSABLE. They never swap. Contrast follows that note's own corrections:
+   crimson darkens to #c31e52 for small text, ink-soft is #6f6f6f not #9a9a9a,
+   because the sampled values fail AA at the sizes this design uses them. */
+:root{
+  --ground:#e9e2e3;         /* blush room */
+  --surface:#ffffff;
+  --line:#eeeeee;
+  --line-2:#e2e2e2;
+  --accent:#e02e63;         /* value */
+  --accent-ink:#c31e52;     /* value, at small sizes */
+  --wash:#fdeef3;
+  --action:#0d0d0d;         /* pressable / winning */
+  --ink:#111111;
+  --soft:#6f6f6f;
+  --dim:#9a9a9a;
+  --faint:#c9c9c9;
+  --seed:#b3730a;--stale:#c0392b;--solid:#1a7f4b;
+  /* how recently something happened, faint to strong — the contribution
+     calendars and the body map read off the same four steps */
+  --ramp-1:#fbd5e1;--ramp-2:#f4a0bd;--ramp-3:#ea5c8c;--ramp-4:#e02e63;
+  --hatch:repeating-linear-gradient(45deg,#c9c9c9 0 1px,transparent 1px 6px);
+  /* The display voice, spent on four things only: the page title, the gauge
+     figure, the room name and the wordmark. Everything functional stays on the
+     system sans, because a column of figures wants one face and a fashion plate
+     wants another. Didot ships with macOS — the page may not fetch a font, so
+     an installed face is the whole available field, not a fallback. */
+  --display:"Didot","Bodoni 72","Hoefler Text",Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);display:flex;height:100vh;
+overflow:hidden;font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+font-variant-numeric:tabular-nums;padding:14px;gap:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:none}
+.unresolved{color:var(--faint);border-bottom:1px dotted var(--faint)}
+

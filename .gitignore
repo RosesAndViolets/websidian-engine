@@ -1,0 +1,7 @@
+# Generated output — rebuilt by Websidian/build.py.
+Websidian/index.html
+Websidian/assets/
+Websidian/serve.log
+
+.DS_Store
+__pycache__/

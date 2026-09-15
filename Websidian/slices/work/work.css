@@ -1,0 +1,17 @@
+/* ---- work log ----
+   A bullet is a kind, the sentence, and its tags. The kind is a fixed-width
+   label rather than an icon, so a column of them reads down the left edge and
+   "open" is findable without a legend. */
+.wk{display:flex;flex-wrap:wrap;gap:9px;align-items:baseline;padding:5px 0;
+border-bottom:1px solid var(--line)}
+.wk:last-child{border-bottom:none}
+.wk i{font-style:normal;font-size:9px;text-transform:uppercase;letter-spacing:.07em;
+color:var(--dim);flex:none;width:52px;padding-top:1px}
+.wk b{font-weight:500;font-size:12px;color:var(--ink);flex:1;min-width:150px;line-height:1.5}
+.wk span{color:var(--dim);font-size:10px;flex:none;font-variant-numeric:tabular-nums}
+.wk.k-open i{color:var(--accent-ink)}
+.wk.k-open b{font-weight:600}
+.wk.k-next i{color:var(--action)}
+.wk.k-dated i{color:var(--seed)}
+.wk.done b{color:var(--dim);text-decoration:line-through}
+.box h3 em:empty{display:none}

@@ -1,0 +1,36 @@
+/* ---- body map ----
+   The two figures share a viewBox and a scale, so front and back read as one
+   body. Recency uses the same crimson ramp as the contribution calendars — a
+   stronger colour is always "more recently", wherever it appears on the site. */
+.figs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fig{margin:0;flex:1 1 180px;max-width:250px;text-align:center}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{color:var(--dim);font-size:10px;text-transform:uppercase;
+letter-spacing:.08em;margin-top:2px}
+.body{fill:#f1f1f1}
+.mus{stroke:var(--surface);stroke-width:1.5}
+.mus.l0{fill:#e3e3e3}
+.mus.l1{fill:var(--ramp-1)}
+.mus.l2{fill:var(--ramp-2)}
+.mus.l3{fill:var(--ramp-3)}
+.mus.l4{fill:var(--ramp-4)}
+.restkey{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px;
+color:var(--dim);font-size:10px}
+.restkey i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;
+vertical-align:-1px}
+.restkey i.l0{background:#e3e3e3}
+.restkey i.l1{background:var(--ramp-1)}
+.restkey i.l2{background:var(--ramp-2)}
+.restkey i.l3{background:var(--ramp-3)}
+.restkey i.l4{background:var(--ramp-4)}
+.rest{display:flex;align-items:baseline;gap:8px;padding:5px 0;
+border-bottom:1px solid var(--line)}
+.rest:last-child{border-bottom:none}
+.rest i{width:9px;height:9px;border-radius:3px;flex:none;align-self:center}
+.rest i.l0{background:#e3e3e3}
+.rest i.l1{background:var(--ramp-1)}
+.rest i.l2{background:var(--ramp-2)}
+.rest i.l3{background:var(--ramp-3)}
+.rest i.l4{background:var(--ramp-4)}
+.rest b{font-size:11.5px;font-weight:600;flex:1}
+.rest span{color:var(--dim);font-size:10.5px}

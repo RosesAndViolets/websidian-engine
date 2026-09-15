@@ -1,0 +1,132 @@
+/* ---- supplements: what goes in, and how near the ceiling it lands ----
+   Crimson marks a value here as everywhere else, and the value being marked is
+   the share of the Tolerable Upper Intake Level. Nothing on this page is
+   coloured for being large — a vitamin C dose at 1000% of its RDA is normal for
+   a supplement and would make an RDA-coloured page one solid band of alarm. */
+.sp-warn{background:#fafafa;border:1px solid var(--line);border-left:2px solid var(--action);
+border-radius:10px;padding:10px 13px;font-size:11.5px;line-height:1.6;color:var(--soft);
+margin-bottom:16px}
+.sp-warn b{color:var(--ink);font-weight:600}
+.sp-warn.sp-bad{border-left-color:var(--accent);background:var(--wash)}
+.sp-warn.sp-bad b{color:var(--accent-ink)}
+
+/* ---- the shelf ----
+   Eleven bottles, folded shut. What goes in is the *input* to this page, not
+   its answer — the ceiling table above is what it is opened for — so a product
+   states its name, when it is taken and how many nutrients it carries, and
+   keeps its full label one click away. Open they were eleven columns of
+   arithmetic between you and the question.
+
+   `<details>` rather than a click handler: the disclosure, the keyboard
+   support and the open state are already in the browser, and the table above
+   uses a hand-rolled expander only because a `<tr>` cannot contain one. */
+.sp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.sp-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+padding:9px 11px;align-self:start}
+/* A dashed edge is the same signal `ingredients.csv` uses for a row resting on
+   an assumed serving weight: real, usable, and not yet confirmed by anyone. */
+.sp-card.sp-prov{border-style:dashed;border-color:var(--line-2)}
+.sp-card>summary{list-style:none;cursor:pointer}
+.sp-card>summary::-webkit-details-marker{display:none}
+.sp-card:hover{border-color:var(--line-2)}
+.sp-card[open]{border-color:var(--action)}
+.sp-card h3{margin:0 0 2px;font-size:11.5px;font-weight:600;line-height:1.4}
+.sp-brand{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sp-when{display:flex;gap:4px;margin:7px 0 0;flex-wrap:wrap}
+.sp-card[open] .sp-when{margin-bottom:9px}
+.sp-when span{border:1px solid var(--line-2);border-radius:999px;padding:1px 7px;
+font-size:9px;color:var(--soft)}
+.sp-when span b{color:var(--ink);font-weight:600;margin-left:3px}
+.sp-when span.off{color:var(--faint);border-color:var(--line)}
+.sp-when span.off b{color:var(--faint)}
+/* How many nutrients are behind the fold, so a card says what opening it is
+   worth. Borderless — it counts what is inside rather than naming a dose. */
+.sp-when .sp-count{border-color:transparent;color:var(--dim);padding-left:2px}
+.sp-list{list-style:none;margin:0;padding:0;font-size:11px;line-height:1.7;color:var(--soft)}
+.sp-list b{color:var(--ink);font-weight:600}
+.sp-list i{font-style:normal;color:var(--faint);font-size:10px}
+.sp-basis{margin:9px 0 0;font-size:10px;line-height:1.55;color:var(--dim)}
+
+.sp-tablewrap{overflow-x:auto}
+.sp-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:640px}
+.sp-table th{text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.07em;
+color:var(--dim);font-weight:600;padding:0 10px 6px 0;border-bottom:1px solid var(--line-2)}
+.sp-table td{padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.sp-table tr:last-child td{border-bottom:none}
+.sp-table td b{font-weight:600}
+.sp-n{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft)}
+.sp-table td i{font-style:normal;display:block;font-size:9px;color:var(--dim);
+text-transform:uppercase;letter-spacing:.06em}
+.sp-over td{background:var(--wash)}
+.sp-over td b{color:var(--accent-ink)}
+
+/* The scale, in a reference-range chart's language: a shaded band for the range
+   with published edges, dashed ticks at those edges, and a dot for your value.
+   The axis runs past the ceiling so an overshoot shows how far it went instead
+   of pinning to the end. */
+.sp-bar{width:210px;white-space:nowrap}
+.sp-scale{position:relative;display:inline-block;width:145px;height:16px;
+vertical-align:middle}
+.sp-scale::before{content:"";position:absolute;left:0;right:0;top:7px;height:2px;
+background:var(--line);border-radius:2px}
+.sp-band{position:absolute;top:2px;height:12px;background:var(--accent);opacity:.13;
+border-radius:3px}
+.sp-tick{position:absolute;top:1px;height:14px;border-left:1px dashed var(--faint)}
+.sp-tick.sp-ceil{border-left-color:var(--dim)}
+.sp-val{position:absolute;top:4px;width:8px;height:8px;margin-left:-4px;
+border-radius:50%;background:var(--action);box-shadow:0 0 0 2px var(--surface)}
+.sp-val.over{background:var(--accent)}
+.sp-over .sp-val{box-shadow:0 0 0 2px var(--wash)}
+.sp-bar em{font-style:normal;font-size:10px;color:var(--soft);margin-left:8px;
+font-variant-numeric:tabular-nums}
+.sp-none{color:var(--faint);font-size:10px}
+
+/* The legend reuses `.legend` from the health slice rather than redefining it —
+   one class, one owner, and a legend beside a chart is the same object here. */
+.sp-key{display:inline-block;width:16px;height:9px;border-radius:3px;
+vertical-align:middle}
+.sp-keyband{background:var(--accent);opacity:.13}
+.sp-keytick{width:0;height:12px;border-left:1px dashed var(--dim);border-radius:0}
+.sp-keyval{width:9px;height:9px;border-radius:50%;background:var(--action)}
+.sp-keyover{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+
+.sp-note{font-size:11.5px;line-height:1.65;color:var(--soft);margin:0 0 10px;max-width:64ch}
+.sp-note b{color:var(--ink);font-weight:600}
+
+/* No label yet: taken daily, contents unknown, and therefore missing from every
+   total on the page. Crimson because the number it affects is the one being
+   read, not because the supplement is a problem. */
+.sp-card.sp-blank{border-style:dashed;border-color:var(--accent);background:var(--wash)}
+.sp-card.sp-blank h3{color:var(--accent-ink)}
+.sp-when .sp-cadence{border-style:dashed}
+
+/* A row opens onto where its number came from. Clickable rows get a pointer and
+   a hover the whole width of the table, because a row that expands and does not
+   say so is a row nobody clicks. */
+.sp-line{cursor:pointer}
+.sp-line:hover td{background:#fafafa}
+.sp-over:hover td{background:var(--wash)}
+.sp-line:focus-visible{outline:2px solid var(--action);outline-offset:-2px}
+.sp-line[aria-expanded="true"] td{background:#f4f4f4}
+.sp-over[aria-expanded="true"] td{background:var(--wash)}
+.sp-detail>td{padding:0 0 12px;border-bottom:1px solid var(--line)}
+.sp-detailin{background:#fafafa;border:1px solid var(--line);border-radius:10px;
+padding:12px 14px}
+.sp-detailin h4{margin:0 0 8px;font-size:9px;text-transform:uppercase;
+letter-spacing:.08em;color:var(--dim);font-weight:600}
+.sp-detailin h4~h4{margin-top:14px}
+.sp-parts{width:100%;border-collapse:collapse;font-size:11px}
+.sp-parts th{text-align:left;font-size:9px;text-transform:uppercase;
+letter-spacing:.06em;color:var(--dim);font-weight:600;padding:0 10px 5px 0}
+.sp-parts td{padding:5px 10px 5px 0;border-top:1px solid var(--line)}
+.sp-parts td i{font-style:normal;color:var(--dim);font-size:9.5px}
+.sp-share{width:150px;white-space:nowrap}
+.sp-sharebar{display:inline-block;width:90px;height:5px;border-radius:999px;
+background:var(--line);vertical-align:middle;overflow:hidden}
+.sp-sharebar span{display:block;height:100%;background:var(--action);border-radius:999px}
+.sp-over .sp-sharebar span{background:var(--accent)}
+.sp-share em{font-style:normal;font-size:10px;color:var(--soft);margin-left:7px;
+font-variant-numeric:tabular-nums}
+.sp-basisnote{margin:0;font-size:11px;line-height:1.6;color:var(--soft);max-width:78ch}
+.sp-basisnote b{color:var(--ink);font-weight:600}

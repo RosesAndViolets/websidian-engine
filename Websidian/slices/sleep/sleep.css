@@ -1,0 +1,9 @@
+.slchart{width:100%;height:auto;display:block;margin-top:14px;overflow:visible}
+.slgrid{stroke:var(--line);stroke-width:1}
+.slaxis{fill:var(--dim);font-size:9.5px}
+.sldate{fill:var(--soft)}
+/* The night itself is the value, so it takes the accent — and the interruption
+   is drawn in the page's own ground, because a wake-up is the absence of sleep
+   and a second colour would make it a second kind of thing. */
+.slbar{fill:var(--accent);opacity:.85}
+.slcut{fill:var(--surface)}

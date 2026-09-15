@@ -1,0 +1,329 @@
+/* ---- weight over time ----
+   One series in the accent, everything else recessive: the grid and the target
+   are there to be read past, not at. The dot you can hit is nine pixels wide and
+   invisible; the one you can see is under three. */
+.wchart{width:100%;height:auto;display:block;margin-top:16px;overflow:visible}
+.wgrid{stroke:var(--line);stroke-width:1}
+.wtarget{stroke:var(--dim);stroke-width:1;stroke-dasharray:4 4}
+.wline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;
+stroke-linecap:round}
+.wgap{stroke:var(--accent);stroke-width:2;stroke-dasharray:2 5;opacity:.3}
+.wdot{fill:var(--accent);stroke:var(--surface);stroke-width:1.5}
+.whit{fill:transparent}
+.waxis{fill:var(--dim);font-size:9.5px}
+.wpt{fill:var(--accent-ink);font-size:10.5px;font-weight:600;text-anchor:middle}
+
+/* ---- the phase corridor ----
+   The plan is furniture and the weigh-ins are the value, so the band is drawn
+   the way the target line already is — recessive, dashed, read past rather than
+   at — and the accent stays on the one series that is a measurement. A corridor
+   in the recency ramp would have claimed the band meant time. */
+.wband{fill:var(--wash)}
+.wbound{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+
+/* ---- the rate gauge ----
+   Position carries "outside the corridor" on its own: a needle beyond the band
+   is already the whole reading, so there is no state colour here. */
+.rgauge{width:100%;height:auto;display:block;margin:6px 0 2px}
+.rax{stroke:var(--line-2);stroke-width:1}
+.rband{fill:var(--wash);stroke:var(--faint);stroke-width:1}
+.rneedle{stroke:var(--accent);stroke-width:2.5;stroke-linecap:round}
+.rneedle.over{stroke:var(--accent-ink)}
+
+/* ---- the cycle ---- */
+.ptable{display:flex;flex-direction:column;gap:10px}
+.prow{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.prow.on{border-color:var(--ramp-2);background:var(--wash)}
+.phead{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.phead b{font-size:14px}
+.pkind{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
+border:1px solid var(--line-2);border-radius:999px;padding:1px 7px}
+.pnow{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.08em;
+color:#fff;background:var(--accent);border-radius:999px;padding:2px 8px}
+.phead .when{margin-left:auto;font-size:10px;color:var(--dim)}
+.pnums{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:11.5px;color:var(--soft)}
+.pnums b{color:var(--ink);font-weight:600}
+.pblocked{color:var(--seed);font-style:normal}
+
+/* ---- tape measurements ----
+   Six series and no categorical palette, which this system does not have and
+   should not gain. So they are told apart by the label at the end of each line,
+   and only the two that make the waist-to-hip ratio are drawn as values — the
+   rest are context. That is the Scarce Accent Rule applied to a chart: the
+   colour marks which two numbers the card is actually about. */
+.mline{fill:none;stroke:var(--faint);stroke-width:1.4;stroke-linejoin:round}
+.mdot{fill:var(--faint)}
+.mline.m-waist{stroke:var(--accent);stroke-width:2}
+.mdot.m-waist{fill:var(--accent)}
+.waxis.m-waist{fill:var(--accent-ink);font-weight:600}
+.mline.m-hip{stroke:var(--ink);stroke-width:2}
+.mdot.m-hip{fill:var(--ink)}
+.waxis.m-hip{fill:var(--ink);font-weight:600}
+
+/* ---- recipe cards ----
+   A pill that is a button still has to look like the pills beside it: the
+   element changed so it could be pressed, not so it could look different. */
+button.pill{font:inherit;font-size:10.5px;cursor:pointer}
+button.pill:hover{border-color:var(--accent);color:var(--accent-ink);background:var(--wash)}
+.rcard{cursor:default}
+.rcard:hover{border-color:var(--line)}
+.rcard.mvp{border-color:var(--line-2);background:linear-gradient(180deg,var(--wash),var(--surface) 60px)}
+.rnum{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.rnum b{font-size:21px;font-weight:600;letter-spacing:-.02em}
+.rnum span{color:var(--dim);font-size:10.5px}
+.rnum .rlog{margin-left:auto;border:1px solid var(--line-2);border-radius:999px;
+padding:2px 8px;font-size:10.5px}
+.rnum .rlog.on{border-color:var(--accent);color:var(--accent-ink);background:var(--wash);
+font-weight:600}
+.rmac{display:flex;gap:10px;margin-bottom:7px}
+.rmac span{color:var(--dim);font-size:10px}
+.rmac b{color:var(--ink);font-size:11.5px;font-weight:600;margin-right:3px}
+.rcard details{margin-top:7px}
+.rcard summary{cursor:pointer}
+.rcard details .hint{margin-top:4px;line-height:1.5}
+
+/* ---- intake ---- */
+.gaugewrap{position:relative;text-align:center;margin:6px 0 2px}
+.gauge{width:100%;max-width:250px;height:auto;display:block;margin:0 auto;overflow:visible}
+.gauge path{fill:none;stroke-width:13;stroke-linecap:round}
+.gauge .track{stroke:#f0f0f0}
+.gauge .fill{stroke:var(--accent);transition:stroke-dasharray .5s ease}
+.gaugewrap.over .fill{stroke:var(--accent)}
+/* The arc the simulator would add, continuing the fill. Butt caps: the round
+   cap the real arc wears would push a bulge back over the eaten part and make
+   the join read as a value rather than a seam. */
+.gauge .sim{stroke:var(--accent);opacity:.3;stroke-linecap:butt;
+transition:stroke-dasharray .35s ease}
+/* The target is a notch on the arc, not its end — the fill runs past it when
+   the day did, the same way the calendar bars do. */
+.gauge .notch{stroke:#fffffff2;stroke-width:13;stroke-linecap:butt}
+.gnum{position:absolute;left:0;right:0;bottom:26px;line-height:1.1}
+.gnum b{font-family:var(--display);font-size:38px;font-weight:400;letter-spacing:-.01em}
+.gnum span{display:block;color:var(--dim);font-size:11px;margin-top:2px}
+/* What is being tried, beside what was eaten. Same crimson at the same weight
+   the arc uses, so the figure and the arc agree about which part is real. */
+.gnum u{font-style:normal;text-decoration:none;font-size:15px;font-weight:600;
+color:var(--accent);opacity:.62;margin-left:4px;vertical-align:8px}
+.mval u{font-style:normal;text-decoration:none;font-size:11px;font-weight:600;
+color:var(--accent);opacity:.62;margin-left:3px}
+.gleft{color:var(--soft);font-size:11px;margin-top:4px}
+.gleft b{color:var(--accent-ink)}
+.gleft b.hot{color:var(--accent-ink)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.macros.extra{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));margin-top:8px}
+.macros .meter{margin:0;background:var(--surface);border:1px solid var(--line);
+border-radius:12px;padding:10px 12px}
+.macros .mrow{font-size:10.5px;color:var(--dim)}
+.macros .mval{margin-top:5px}
+.macros .mval b{font-size:17px;font-weight:600}
+.macros.extra .mval b{font-size:14px}
+.macros .mval span{color:var(--dim);font-size:10.5px}
+.macros .meter.over .mval b{color:var(--accent-ink)}
+/* ---- the month calendar ----
+   Seven day columns and a week column, one row per week. Cells are flat in the
+   grid, in date order, so a month is a run of divs and nothing nests. */
+.calbar{display:flex;align-items:center;gap:8px;margin:0 0 12px}
+.calbar .btn{padding:4px 12px;font-size:14px;line-height:1.1}
+.calbar b{font-size:14px;font-weight:600;letter-spacing:-.02em;min-width:150px}
+.calbar .hint{margin-left:auto;text-align:right}
+.calmonth{display:grid;grid-template-columns:repeat(7,minmax(96px,1fr)) minmax(96px,.9fr);
+gap:4px;min-width:760px}
+.chead{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+padding:0 2px 2px}
+.cday{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+padding:7px 8px;min-height:92px;overflow:hidden}
+.cday[data-day]{cursor:pointer}
+.cday[data-day]:hover{border-color:var(--accent)}
+.cday.out{background:transparent;border-color:transparent}
+.cday.out .cdate{color:var(--faint)}
+.cday.now{border-color:var(--action)}
+.cdate{font-size:11px;color:var(--soft);font-weight:600}
+.cday.now .cdate{color:var(--ink)}
+.ckcal{font-size:16px;font-weight:600;letter-spacing:-.02em;margin-top:2px}
+.ckcal i{font-style:normal;font-size:9.5px;color:var(--dim);margin-left:3px}
+.cday.over .ckcal{color:var(--accent-ink)}
+/* Distance from the target, not a share of it: the notch is the target, the
+   fill runs short of it or past it, and the length is the size of the miss. */
+.dbar{position:relative;height:7px;border-radius:4px;margin:6px 0;
+background:linear-gradient(90deg,#f2f2f2 0 62%,#e4e4e4 62%)}
+.dbar i{display:block;height:100%;background:var(--solid);border-radius:4px}
+.dbar.over i{background:var(--accent)}
+/* The simulated run, continuing from where the eaten one stops. Opacity rather
+   than a pale token: the pale shade has to exist in green *and* crimson and the
+   palette carries neither, and one rule at 30% of whichever colour the state
+   already earned is a lighter shade of exactly the right hue every time. */
+.dbar u{position:absolute;top:0;bottom:0;background:var(--solid);opacity:.32;
+border-radius:4px}
+.dbar u.over{background:var(--accent)}
+.dbar s{position:absolute;top:0;bottom:0;width:2px;background:#fffffff2;
+margin-left:-1px}
+.d{font-size:10.5px;font-weight:600;margin-left:5px}
+.d.under{color:var(--solid)}
+.d.over{color:var(--accent-ink)}
+.cmarks{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;color:var(--dim);font-size:9.5px}
+.cmarks .ms{color:var(--seed)}
+.cmeals{list-style:none;margin:0;padding:0}
+.cmeals li{color:var(--soft);font-size:10.5px;line-height:1.5;white-space:nowrap;
+overflow:hidden;text-overflow:ellipsis}
+.cweek{border:1px dashed var(--line-2);border-radius:10px;padding:7px 8px;background:#fafafa}
+.cweek b{font-size:15px;font-weight:600;letter-spacing:-.02em}
+.cweek span{display:block;color:var(--dim);font-size:9.5px;line-height:1.5}
+/* The delta rides beside the average, the rest of the week stacks under it. */
+.cweek b+span{display:inline;font-size:10.5px;margin-left:4px;color:var(--soft)}
+.cweek .hot,.calbar .hot{color:var(--accent-ink)}
+/* The fortnight as distance from the goal. Every column is full height and the
+   bar is a pseudo-element hung off the 50% line, so over grows up in crimson and
+   under grows down in green from the same dotted rule — the goal itself, drawn
+   once across the whole chart rather than left to be inferred from bar heights.
+   A day with nothing logged is a grey stub on the line, not a full miss. */
+.spark.dev{position:relative;height:104px;align-items:stretch;gap:3px}
+.spark.dev::after{content:"";position:absolute;left:0;right:0;top:50%;
+border-top:1px dashed var(--faint)}
+.spark.dev i{position:relative;background:none;min-height:0;border-radius:4px}
+/* A day that landed within a few kcal of the goal still gets a sliver — a label
+   floating over nothing reads as a bug rather than as a bullseye. */
+.spark.dev i::before{content:"";position:absolute;left:0;right:0;height:var(--h);min-height:2px}
+.spark.dev i.over::before{bottom:50%;background:var(--accent);border-radius:3px 3px 0 0}
+.spark.dev i.under::before{top:50%;background:var(--solid);border-radius:0 0 3px 3px}
+.spark.dev i.z::before{top:calc(50% - 1.5px);height:3px;background:var(--line-2)}
+/* Today's column while a food is being tried: the same bar, drawn to where the
+   day would land, hung off the same line and sitting *under* the real one. They
+   overlap rather than stack, which is what makes the crossing case right for
+   nothing — eat enough and the pale bar is above the line while the solid green
+   is still below it, and that is precisely what happened. */
+.spark.dev i s{position:absolute;left:0;right:0;height:var(--sh);min-height:2px;
+opacity:.34;text-decoration:none;border-radius:3px}
+.spark.dev i s.over{bottom:calc(50% + var(--s0));background:var(--accent)}
+.spark.dev i s.under{top:calc(50% + var(--s0));background:var(--solid)}
+/* The numbers sit on fixed rows at the outer edges rather than riding each bar's
+   tip, and alternate columns take the inner row. Following the tips reads better
+   on a wide card and breaks on a narrow one — at fourteen columns "+425" and
+   "+578" are wider than the pitch between them, and two neighbours of similar
+   height print on top of each other. Two rows means a label can only ever meet
+   its same-parity neighbour, two columns and twice the pitch away, which no
+   four-figure miss can span. */
+.spark.dev i::after{content:attr(data-d);position:absolute;left:-4px;right:-4px;
+text-align:center;font-size:9px;line-height:1;white-space:nowrap}
+.spark.dev i.over::after{top:1px;color:var(--accent-ink)}
+.spark.dev i.under::after{bottom:1px;color:var(--solid)}
+.spark.dev i:nth-child(even).over::after{top:12px}
+.spark.dev i:nth-child(even).under::after{bottom:12px}
+.spark.dev i.sel{background:var(--wash);outline:none}
+.spark.dev i:hover{background:var(--line)}
+
+/* ---- On record arrives ----
+   The instrument settles part by part rather than appearing whole: the arc
+   draws, the figure rises under it, the three macro meters follow 75ms apart,
+   then the fortnight fills in left to right. It runs once, on render — nothing
+   here loops, and the card is already legible before a frame of it plays.
+
+   The sparkline stagger reads its index off `--n`, set inline per bar by
+   onRecord(), so fourteen bars need one rule instead of fourteen. */
+@media (prefers-reduced-motion: no-preference) {
+  .record:not(.quiet) .gauge .fill{animation:rec-arc 620ms cubic-bezier(.16,1,.3,1) both}
+  .record:not(.quiet) .gnum,.record:not(.quiet) .gleft{animation:rec-up 420ms cubic-bezier(.16,1,.3,1) 260ms both}
+  .record:not(.quiet) .macros .meter{animation:rec-up 380ms cubic-bezier(.16,1,.3,1) both}
+  .record:not(.quiet) .macros .meter:nth-child(1){animation-delay:340ms}
+  .record:not(.quiet) .macros .meter:nth-child(2){animation-delay:415ms}
+  .record:not(.quiet) .macros .meter:nth-child(3){animation-delay:490ms}
+  .record:not(.quiet) .macros .bar i,.record:not(.quiet) .macros .dbar i{transform-origin:left center;
+  animation:rec-fill 520ms cubic-bezier(.16,1,.3,1) 420ms both}
+  .record:not(.quiet) .spark:not(.dev) i{transform-origin:bottom center;
+  animation:rec-bar 420ms cubic-bezier(.16,1,.3,1) both;
+  animation-delay:calc(560ms + 16.5ms * var(--n, 0))}
+  /* Same stagger, but each bar grows out of the goal line rather than off the
+     floor, so the fortnight opens from the middle in both directions. The
+     number fades in on its own bar's beat — arriving early it would hang over
+     empty space. */
+  .record:not(.quiet) .spark.dev i::before,.record:not(.quiet) .spark.dev i::after{
+  animation-duration:420ms;animation-timing-function:cubic-bezier(.16,1,.3,1);
+  animation-fill-mode:both;animation-delay:calc(560ms + 16.5ms * var(--n, 0))}
+  .record:not(.quiet) .spark.dev i::before{animation-name:rec-bar}
+  .record:not(.quiet) .spark.dev i::after{animation-name:rec-up}
+  .record:not(.quiet) .spark.dev i.over::before{transform-origin:bottom center}
+  .record:not(.quiet) .spark.dev i.under::before,.record:not(.quiet) .spark.dev i.z::before{transform-origin:top center}
+}
+@keyframes rec-arc{from{stroke-dasharray:0 100}}
+@keyframes rec-up{from{opacity:0;transform:translateY(6px)}}
+@keyframes rec-fill{from{transform:scaleX(0)}}
+@keyframes rec-bar{from{transform:scaleY(0)}}
+/* A selected day has to be findable whether or not motion is allowed, so this
+   sits outside the query: a 2px bar wearing a 2px outline reads as a blot. */
+.spark i.sel{min-height:9px;outline-offset:2px}
+
+/* What is queued to log — the tray under the quick-log popup's search and
+   cards. The chip carries its own kcal because that is the number being
+   weighed, and its own × because dropping one item is the whole point of a
+   tray you have not committed yet. */
+.simchips{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:8px}
+.simchip{display:inline-flex;align-items:baseline;gap:5px;background:var(--wash);
+border:1px solid var(--ramp-1);border-radius:999px;padding:3px 5px 3px 11px;
+font-size:11px;color:var(--ink)}
+.simchip i{font-style:normal;font-size:9.5px;color:var(--soft)}
+.simchip b{font-weight:600;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.simchip button{border:none;background:none;padding:0 5px;font:inherit;font-size:12px;
+line-height:1;color:var(--dim);cursor:pointer}
+.simchip button:hover{color:var(--accent-ink)}
+.simclear{border:none;background:none;padding:0 4px;font:inherit;font-size:10px;
+color:var(--soft);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.simclear:hover{color:var(--ink)}
+
+/* On record leads the Diet home at full width — it is the answer the page is
+   opened for, and the fortnight bar chart is the one thing here that spends
+   every pixel of width it is given. The composer and the weight card share the
+   row beneath it. */
+.diet-home .record{grid-column:span 12}
+.diet-home .quicklog{grid-column:span 12}
+
+/* ---- quick log ----
+   Four square status cards choose the time of day; the popup one opens is a
+   native <dialog>, on the same pattern as the Milestone Dialog in
+   shell/timeline.js — Escape, the backdrop and focus containment are the
+   browser's. Its card grid reuses the site's own .card/.cards rather than a
+   picker-specific shape, and its tray reuses .simchips outright, because
+   "what's queued" is the same picture whether it got there by typing or a
+   tap. */
+.qslots{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.qslot{min-height:104px;display:flex;flex-direction:column;justify-content:space-between}
+.qslot-kcal{font-size:21px;font-weight:600;letter-spacing:-.02em;color:var(--accent-ink)}
+.qslot-kcal span{font-size:10.5px;font-weight:400;color:var(--dim);margin-left:3px}
+.qslot-add{font-size:21px;font-weight:300;color:var(--faint);line-height:1}
+
+/* The dialog is the site's own, widened for a card grid — see .tl-modal in
+   projects.css for the chrome (backdrop, close button, tab strip) this
+   inherits without redeclaring any of it. */
+.ql-modal{max-width:640px}
+/* [hidden] loses to .tl-tabs{display:flex} at equal specificity unless said
+   again here — the cascade, not a bug, but one worth a rule of its own. */
+.tl-tabs[hidden]{display:none}
+.qsearch{display:block;width:100%;border:1px solid var(--line-2);border-radius:999px;
+padding:5px 12px;font:inherit;font-size:11.5px;color:var(--ink);background:var(--surface)}
+.qsearch:focus{outline:none;border-color:var(--action)}
+.qcards{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+/* The card itself is not the click target — a star and an add button share
+   it, the same reason .rcard is not clickable while its <details> is. */
+.qcard{position:relative;cursor:default;padding:0}
+.qcard:hover{border-color:var(--line)}
+.qstar{position:absolute;top:6px;right:6px;z-index:1;border:none;background:none;
+padding:2px 4px;font-size:13px;line-height:1;color:var(--faint);cursor:pointer}
+.qstar.on{color:var(--accent)}
+.qstar:hover{color:var(--accent-ink)}
+.qadd{display:block;width:100%;text-align:left;background:none;border:0;
+border-radius:inherit;padding:11px 28px 11px 13px;font:inherit;cursor:pointer}
+.qadd:hover h3{color:var(--accent-ink)}
+.qadd h3{margin:0 0 3px}
+.qadd .hint{margin:0}
+
+/* Small, quiet actions on an already-logged row — the same visual weight as
+   the tray's own remove button, because deleting a meal and dropping a tray
+   item are the same kind of undo. */
+.rowbtn{border:none;background:none;padding:0;margin-left:8px;font:inherit;
+font-size:10px;color:var(--dim);cursor:pointer;text-decoration:underline;
+text-underline-offset:2px}
+.rowbtn:hover{color:var(--accent-ink)}
+
+.meter{margin:0 0 13px}
+.meter .mrow{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px}
+.meter .mrow b{color:var(--ink);font-weight:600}
+.meter .bar{margin:5px 0 0}
+.meter.over .bar i{background:var(--accent)}

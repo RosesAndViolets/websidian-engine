@@ -1,0 +1,47 @@
+/* ---- dashboard pieces ---- */
+/* A dated row: recent activity, and the long term goals, which are the same
+   shape — a heading line and something under it. They shared this rule under
+   two names until `.prog` collided with the project rail of the same name in
+   projects.css, which loads later and won. One name, one rule. */
+.act{padding:9px 0;border-bottom:1px solid var(--line)}
+.act:last-child{border-bottom:none}
+.act-h{display:flex;gap:10px;align-items:baseline}
+.act-h b{font-weight:600;font-size:12px;flex:1}
+.when{color:var(--dim);font-size:10.5px}
+.act-f{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.act-f a,.act-f .gone{font-size:10.5px;border:1px solid var(--line-2);border-radius:999px;
+padding:2px 8px;color:var(--soft)}
+.act-f a:hover{border-color:var(--accent);color:var(--accent-ink);background:var(--wash)}
+.act-f .gone{color:var(--faint);border-style:dashed}
+.bar{height:4px;background:#f0f0f0;border-radius:3px;margin:8px 0;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+/* The goals are furniture, not a card in the flow: pinned to main's scrollport
+   so the board slides under them. The negative margins let its own background
+   reach across the .wrap padding — otherwise scrolled cards show through the
+   gutters. Pulling 16px off the top is what puts it "closer to the top". */
+.goals{position:sticky;top:0;z-index:2;background:#fcfcfc;
+margin:-16px -30px 0;padding:16px 30px 14px}
+.goals .box{max-width:560px;margin:0 auto}
+.wbar{justify-content:flex-end;margin:0 0 14px}
+.wbar .pill b{cursor:pointer;color:var(--dim);font-weight:400}
+.wbar .pill b:hover{color:var(--accent-ink)}
+.wbar select{appearance:none;border:1px solid var(--line-2);background:var(--surface);
+color:var(--soft);border-radius:999px;padding:4px 11px;font:inherit;font-size:10.5px;
+line-height:1.5;cursor:pointer}
+.wbar select:hover{border-color:var(--action);color:var(--ink)}
+ul.todo{list-style:none;padding:0;margin:0}
+ul.todo li{font-size:11.5px;color:var(--soft);padding:3px 0 3px 14px;position:relative}
+ul.todo li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
+border-radius:50%;background:var(--faint)}
+ul.todo li.more{color:var(--dim)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.tile b{display:block;font-size:21px;font-weight:600;letter-spacing:-.02em}
+.tile span{color:var(--dim);font-size:10px}
+.tile.warn b{color:var(--accent-ink)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:52px;margin:12px 0 4px}
+.spark i{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:.85;min-height:2px;
+cursor:pointer}
+.spark i:hover{opacity:1}
+.spark i.z{background:var(--line);opacity:1}
+.spark i.sel{outline:2px solid var(--action);outline-offset:1px}
